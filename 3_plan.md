@@ -1,102 +1,74 @@
-# Plan técnico — v1: Catálogos de Investigación (PHP + MariaDB)
+# Plan técnico — v1: CRUD de las 6 tablas iniciales
 
-## 1. Estructura del proyecto
+## 1. Objetivo de la versión v1
 
-El proyecto estará dividido en dos repositorios privados:
+La versión `v1` implementará un sistema web para administrar la información inicial del módulo de **Investigación**.
+
+La solución estará dividida en dos repositorios privados:
+
+- **API:** PHP + POO + MariaDB.
+- **Frontend:** PHP + Bootstrap.
+
+En esta primera versión se implementará el CRUD completo de las siguientes seis tablas:
+
+1. `area_conocimiento`
+2. `objetivo_desarrollo_sostenible`
+3. `area_aplicacion`
+4. `termino_clave`
+5. `universidad`
+6. `linea_investigacion`
+
+La versión se considera terminada cuando las seis entidades puedan ser consultadas, creadas, actualizadas y eliminadas desde el Frontend utilizando la API.
+
+La eliminación será lógica cuando la estructura de la base de datos lo permita. Los registros marcados como inactivos no deberán aparecer en las consultas normales del sistema.
+
+---
+
+## 2. Arquitectura general
+
+El proyecto utilizará una arquitectura por capas para separar responsabilidades.
+
+### API
 
 ```text
-api_investigacion/
-└── API
+API/
+├── public/
+│   └── index.php
+│
+├── src/
+│   ├── Controllers/
+│   ├── Services/
+│   │   └── Interfaces/
+│   ├── Repositories/
+│   │   └── Interfaces/
+│   ├── Models/
+│   ├── Assemblers/
+│   ├── Exceptions/
+│   └── Configuration/
+│
+├── tests/
+│
+├── .env.example
+├── .gitignore
+└── README.md
 
-front_investigacion/
-└── Frontend
 
-La API será responsable de:
-
-Recibir peticiones HTTP.
-Validar la estructura de los datos recibidos.
-Aplicar las reglas de negocio.
-Ejecutar las consultas SQL.
-Comunicarse con MariaDB.
-Devolver respuestas JSON.
-
-El Frontend será responsable de:
-
-Mostrar las interfaces al usuario.
-Mostrar formularios.
-Validar información básica antes de enviarla.
-Consumir la API.
-Mostrar resultados, errores y mensajes de operación.
-Utilizar Bootstrap para la interfaz.
-2. Árbol de la API
-
-La estructura propuesta para la API es:
-
-api_investigacion/
+Frontend/
+├── public/
+│   ├── css/
+│   ├── js/
+│   └── bootstrap/
+│
+├── views/
+│   ├── area_conocimiento/
+│   ├── objetivo_desarrollo_sostenible/
+│   ├── area_aplicacion/
+│   ├── termino_clave/
+│   ├── universidad/
+│   └── linea_investigacion/
+│
 ├── index.php
-│
-├── controladores/
-│   ├── ControladorAreaConocimiento.php
-│   ├── ControladorObjetivoDesarrolloSostenible.php
-│   ├── ControladorAreaAplicacion.php
-│   ├── ControladorTerminoClave.php
-│   ├── ControladorUniversidad.php
-│   └── ControladorLineaInvestigacion.php
-│
-├── servicios/
-│   ├── IServicioAreaConocimiento.php
-│   ├── ServicioAreaConocimiento.php
-│   ├── IServicioObjetivoDesarrolloSostenible.php
-│   ├── ServicioObjetivoDesarrolloSostenible.php
-│   ├── IServicioAreaAplicacion.php
-│   ├── ServicioAreaAplicacion.php
-│   ├── IServicioTerminoClave.php
-│   ├── ServicioTerminoClave.php
-│   ├── IServicioUniversidad.php
-│   ├── ServicioUniversidad.php
-│   ├── IServicioLineaInvestigacion.php
-│   ├── ServicioLineaInvestigacion.php
-│   └── ensamblador.php
-│
-├── repositorios/
-│   ├── IRepositorioAreaConocimiento.php
-│   ├── RepositorioAreaConocimientoMariaDB.php
-│   ├── IRepositorioObjetivoDesarrolloSostenible.php
-│   ├── RepositorioObjetivoDesarrolloSostenibleMariaDB.php
-│   ├── IRepositorioAreaAplicacion.php
-│   ├── RepositorioAreaAplicacionMariaDB.php
-│   ├── IRepositorioTerminoClave.php
-│   ├── RepositorioTerminoClaveMariaDB.php
-│   ├── IRepositorioUniversidad.php
-│   ├── RepositorioUniversidadMariaDB.php
-│   ├── IRepositorioLineaInvestigacion.php
-│   └── RepositorioLineaInvestigacionMariaDB.php
-│
-├── modelos/
-│   ├── AreaConocimiento.php
-│   ├── ObjetivoDesarrolloSostenible.php
-│   ├── AreaAplicacion.php
-│   ├── TerminoClave.php
-│   ├── Universidad.php
-│   └── LineaInvestigacion.php
-│
-├── excepciones/
-│   ├── NoEncontradoExcepcion.php
-│   ├── ConflictoExcepcion.php
-│   └── ValidacionExcepcion.php
-│
-├── configuracion/
-│   └── ConexionMariaDB.php
-│
-├── pruebas/
-│   ├── prueba_area_conocimiento.php
-│   ├── prueba_objetivo_desarrollo_sostenible.php
-│   ├── prueba_area_aplicacion.php
-│   ├── prueba_termino_clave.php
-│   ├── prueba_universidad.php
-│   └── prueba_linea_investigacion.php
-│
-├── .env
+├── cliente_api.php
 ├── .env.example
 ├── .gitignore
 └── README.md
